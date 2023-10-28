@@ -30,23 +30,28 @@ setattr(Polygon, 'draw', polygon_draw)
 
 
 tk = TkDrawer()
-f = Void()
 tk.clean()
-d = Circle_perimeter()
+f = Void()
 
 try:
     X = float(input("Введите x координату центра круга -> "))
     Y = float(input("Введите y координату центра круга -> "))
     R = float(input("Введите значение радиуса -> "))
+    d = Circle_perimeter(X, Y, R)
     tk.draw_circle(R2Point(X, Y), R)
+    d_ed = False
     while True:
-        f = f.add(R2Point())
+        if not d_ed:
+            f = f.add(R2Point(), d)
+            d_ed = True
+        else:
+            f = f.add(R2Point())
         tk.clean()
         f.draw(tk)
         tk.draw_circle(R2Point(X, Y), R)
         print(f"S = {f.area()}, P = {f.perimeter()}\n")
-        ans = d.Perimeter_recount(f, X, Y, R)
-        print(f"P части выпуклой оболочки внутри замкнутого круга = {ans}")
+        print(f"P части выпуклой оболочки внутри замкнутого круга:")
+        print(f"{f.perimeter_in_circle()}")
 except (EOFError, KeyboardInterrupt):
     print("\nStop")
     tk.close()

@@ -1,40 +1,16 @@
 from r2point import R2Point
-from convex import Void, Point, Segment, Polygon
 from math import sqrt
 import sympy as sp
 from deq import Deq
 
 
 class Circle_perimeter:
-    def Perimeter_recount(self, f, X, Y, R):
-        points_list = []  # Создаем список для точек фигуры
-        ans = 0  # Перменная, храняшая ответ
-        if isinstance(f, Point):
-            return 0
-        elif isinstance(f, Segment):
-            points_list.append(f.p)
-            points_list.append(f.q)
-            pt1 = points_list[len(points_list)-1]
-            pt2 = points_list[0]
-            ans += self.ans_recount(f, X, Y, R, pt1, pt2)
-        else:
-            # Цикл достающий точки из очереди и добавляюзщий в список
-            while (f.points.size() > 0):
-                points_list.append(f.points.pop_first())
-            for i in points_list[::-1]:  # Кладем точки назад
-                f.points.push_first(i)
-            for i in range(0, len(points_list)-1):
-                pt1 = points_list[i]
-                pt2 = points_list[i+1]
-                ans += self.ans_recount(f, X, Y, R, pt1, pt2)
-            pt1 = points_list[len(points_list)-1]
-            pt2 = points_list[0]
-            ans += self.ans_recount(f, X, Y, R, pt1, pt2)
-        return ans
+    def __init__(self, X, Y, R):
+        self.X, self.Y, self.R = X, Y, R
 
-    def ans_recount(self, f, X, Y, R, pt1, pt2):
-        p1 = ((pt1.x-X)**2 + (pt1.y-Y)**2 <= R**2)
-        p2 = ((pt2.x-X)**2 + (pt2.y-Y)**2 <= R**2)
+    def ans_recount(self, pt1, pt2):
+        p1 = ((pt1.x-self.X)**2 + (pt1.y-self.Y)**2 <= self.R**2)
+        p2 = ((pt2.x-self.X)**2 + (pt2.y-self.Y)**2 <= self.R**2)
         ans = 0
         if p1 and p2:
             ans += pt1.dist(pt2)
@@ -49,7 +25,7 @@ class Circle_perimeter:
                 k = ((y2 - y1)/(x2 - x1))
                 b = y2 - k*x2
                 f1 = sp.Eq(y, k*x+b)
-            f2 = sp.Eq((x-X)**2 + (y-Y)**2, R**2)
+            f2 = sp.Eq((x-self.X)**2 + (y-self.Y)**2, self.R**2)
             sol_1 = sp.solve((f1, f2), (x, y))
             sol = []
             for i in sol_1:
