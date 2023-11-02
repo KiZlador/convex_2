@@ -4,6 +4,7 @@ from r2point import R2Point
 from convex import Figure, Void, Point, Segment, Polygon
 from modification import Circle_perimeter
 
+
 class TestVoid:
 
     # Инициализация (выполняется для каждого из тестов класса)
